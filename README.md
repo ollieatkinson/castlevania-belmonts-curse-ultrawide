@@ -26,6 +26,15 @@ Verified in-game on Linux/Proton at 5120×2160 and in a 3440×1440 window, using
 
 ## Build
 
-The patch source is `src/SUWSF.ini`; `src/version.ini` preloads the game's IL2CPP module before scanning. Run `python3 src/package.py` to package the pinned upstream binaries and configuration into `dist/`. Python is only needed to build the ZIP. Actions does this on `trunk`; `v*` tags publish releases. No game files are needed to build.
+The patch source is `src/SUWSF.ini`; `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` declares the pinned upstream dependencies and their SHA-256 hashes. CMake fetches them; CPack builds the release ZIP and checksum in `dist/`.
+
+With CMake 3.24 or later:
+
+```sh
+cmake -S . -B build
+cmake --build build --target package
+```
+
+Actions runs this on `trunk`; `v*` tags publish releases. No game files or compiler are needed. Players only need the release ZIP. No Python is used.
 
 Configuration and packaging: MIT. [Third-party licenses](THIRD_PARTY_NOTICES.md). Unofficial community fix.

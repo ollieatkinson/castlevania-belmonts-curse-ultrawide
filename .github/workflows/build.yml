@@ -15,17 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-python@v7.0.0
-        with:
-          python-version: '3.12'
-      - name: Check source syntax
-        run: python -m compileall -q src
-      - name: Build and verify ZIPs
-        run: python src/package.py
+      - name: Fetch dependencies
+        run: cmake -S . -B build
+      - name: Package
+        run: cmake --build build --target package
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: downloads
-          path: dist/*
+          path: |
+            dist/*.zip
+            dist/*.sha256
           if-no-files-found: error
 
   release:
@@ -45,6 +44,6 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: >-
-          gh release create "$RELEASE_TAG" dist/*.zip dist/SHA256SUMS.txt
+          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256
           --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide"
           --notes 'Drop-in SUWSF configuration with automatic resolution detection, including 3440×1440 and 5120×2160. Extract beside the game executable, select Fullscreen Windowed and the highest resolution entry (still labelled 3840×2160). Proton: WINEDLLOVERRIDES="version=n,b" %command%. Delete the four added runtime/config files to uninstall. Some room masks and menu artwork edges remain. Verified on Linux/Proton, Steam build 25766122.'
