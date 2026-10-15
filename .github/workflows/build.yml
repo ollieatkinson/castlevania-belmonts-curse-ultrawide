@@ -46,4 +46,4 @@ jobs:
         run: >-
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256
           --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide"
-          --notes 'Drop-in SUWSF configuration with automatic resolution detection, including 3440×1440 and 5120×2160. Extract beside the game executable, select Fullscreen Windowed and the highest resolution entry (still labelled 3840×2160). Proton: WINEDLLOVERRIDES="version=n,b" %command%. Delete the four added runtime/config files to uninstall. Some room masks and menu artwork edges remain. Verified on Linux/Proton, Steam build 25766122.'
+          --notes 'Adds correct map and inventory framing at 1280×800 (16:10), while preserving ultrawide gameplay. Existing users can replace SUWSF.ini and restart. For a new install, extract beside the game executable, select Fullscreen Windowed and the highest resolution entry (still labelled 3840×2160). Proton: WINEDLLOVERRIDES="version=n,b" %command%. Verified on Linux/Proton, Steam build 25766122. The reported camera issue on the climb toward the third boss remains under investigation; see the README for limitations.'

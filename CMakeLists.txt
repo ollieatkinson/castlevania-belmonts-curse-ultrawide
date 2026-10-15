@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
-project(BelmontsCurseUltrawide VERSION 1.0.0 LANGUAGES NONE)
+project(BelmontsCurseUltrawide VERSION 1.0.1 LANGUAGES NONE)
+
+find_program(ASSEMBLER as REQUIRED)
+find_program(LINKER ld REQUIRED)
+find_program(OBJCOPY objcopy REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(suwsf
@@ -14,7 +18,19 @@ FetchContent_Declare(asi_loader
 )
 FetchContent_MakeAvailable(suwsf asi_loader)
 
-install(FILES "${suwsf_SOURCE_DIR}/SUWSF.asi" src/SUWSF.ini src/version.ini DESTINATION .)
+add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/SUWSF.ini"
+    COMMAND "${ASSEMBLER}" --64 -o menu-camera.o "${CMAKE_SOURCE_DIR}/src/menu-camera.s"
+    COMMAND "${LINKER}" -T "${CMAKE_SOURCE_DIR}/src/menu-camera.ld" -e menu_camera_fit
+        -o menu-camera.elf menu-camera.o
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}" "-DBINARY_DIR=${CMAKE_BINARY_DIR}"
+        "-DOBJCOPY=${OBJCOPY}" -P "${CMAKE_SOURCE_DIR}/src/GenerateINI.cmake"
+    DEPENDS src/menu-camera.s src/menu-camera.ld src/SUWSF.ini.in src/GenerateINI.cmake
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    VERBATIM
+)
+add_custom_target(configuration ALL DEPENDS "${CMAKE_BINARY_DIR}/SUWSF.ini")
+
+install(FILES "${suwsf_SOURCE_DIR}/SUWSF.asi" "${CMAKE_BINARY_DIR}/SUWSF.ini" src/version.ini DESTINATION .)
 install(FILES "${asi_loader_SOURCE_DIR}/dinput8.dll" DESTINATION . RENAME version.dll)
 install(FILES README.md LICENSE THIRD_PARTY_NOTICES.md DESTINATION BelmontsCurseUltrawide)
 install(DIRECTORY licenses DESTINATION BelmontsCurseUltrawide)

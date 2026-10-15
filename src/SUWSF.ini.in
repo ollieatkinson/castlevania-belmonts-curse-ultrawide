@@ -36,3 +36,21 @@ Value="EB 25"
 ValueType="byte"
 Match="1"
 Module="GameAssembly.dll"
+
+; Keep the world-space menu camera large enough for 16:10.
+[Patch:00MenuCameraCode]
+Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Offset=36
+Value="@MenuCameraCode@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
+
+; Keep the world-space menu camera large enough for 16:10.
+[Patch:MenuCameraFit]
+Pattern="E8 35 FB 5F 02 48 8B 4B 28 48 85 C9 0F 84 B8 02 00 00 45 33 C0 B2 01 E8 FE D6 63 02 48 8B 4B 20 48 85 C9 0F 84 A1 02 00"
+Offset=23
+Value="@MenuCameraCall@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
