@@ -18,13 +18,16 @@ jobs:
       - name: Fetch dependencies
         run: cmake -S . -B build
       - name: Package
-        run: cmake --build build --target package
+        run: |
+          cmake --build build --target package
+          cp build/SUWSF.ini dist/SUWSF.ini
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: downloads
           path: |
             dist/*.zip
             dist/*.sha256
+            dist/*.ini
           if-no-files-found: error
 
   release:
@@ -43,7 +46,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: >-
-          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256
-          --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide"
-          --notes 'Adds correct map and inventory framing at 1280×800 (16:10), while preserving ultrawide gameplay. Existing users can replace SUWSF.ini and restart. For a new install, extract beside the game executable, select Fullscreen Windowed and the highest resolution entry (still labelled 3840×2160). Proton: WINEDLLOVERRIDES="version=n,b" %command%. Verified on Linux/Proton, Steam build 25766122. The reported camera issue on the climb toward the third boss remains under investigation; see the README for limitations.'
+        run: |
+          release_flags=()
+          if [[ "$RELEASE_TAG" == *-* ]]; then
+            release_flags+=(--prerelease --latest=false)
+          fi
+          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
+            --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
+            "${release_flags[@]}" \
+            --notes 'Camera-boundary preview for ultrawide. Keeps the original 16:9 camera boundaries while rendering the full ultrawide view. Native-code checks reproduce and correct boundary failures in early rooms; confirmation in previously broken gameplay sections is still needed. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution. Restore the stable INI to undo the preview. The 1280×800 menu correction is included. Targets Steam build 25766122.'

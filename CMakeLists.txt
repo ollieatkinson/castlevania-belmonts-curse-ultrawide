@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(BelmontsCurseUltrawide VERSION 1.0.1 LANGUAGES NONE)
+project(BelmontsCurseUltrawide VERSION 1.0.2 LANGUAGES NONE)
 
 find_program(ASSEMBLER as REQUIRED)
 find_program(LINKER ld REQUIRED)
@@ -20,11 +20,12 @@ FetchContent_MakeAvailable(suwsf asi_loader)
 
 add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/SUWSF.ini"
     COMMAND "${ASSEMBLER}" --64 -o menu-camera.o "${CMAKE_SOURCE_DIR}/src/menu-camera.s"
+    COMMAND "${ASSEMBLER}" --64 -o camera-bounds.o "${CMAKE_SOURCE_DIR}/src/camera-bounds.s"
     COMMAND "${LINKER}" -T "${CMAKE_SOURCE_DIR}/src/menu-camera.ld" -e menu_camera_fit
-        -o menu-camera.elf menu-camera.o
+        -o menu-camera.elf menu-camera.o camera-bounds.o
     COMMAND "${CMAKE_COMMAND}" "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}" "-DBINARY_DIR=${CMAKE_BINARY_DIR}"
         "-DOBJCOPY=${OBJCOPY}" -P "${CMAKE_SOURCE_DIR}/src/GenerateINI.cmake"
-    DEPENDS src/menu-camera.s src/menu-camera.ld src/SUWSF.ini.in src/GenerateINI.cmake
+    DEPENDS src/menu-camera.s src/camera-bounds.s src/menu-camera.ld src/SUWSF.ini.in src/GenerateINI.cmake
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
     VERBATIM
 )
@@ -36,7 +37,7 @@ install(FILES README.md LICENSE THIRD_PARTY_NOTICES.md DESTINATION BelmontsCurse
 install(DIRECTORY licenses DESTINATION BelmontsCurseUltrawide)
 
 set(CPACK_GENERATOR ZIP)
-set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-v${PROJECT_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-v${PROJECT_VERSION}-preview.1")
 set(CPACK_PACKAGE_DIRECTORY "${CMAKE_SOURCE_DIR}/dist")
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
 set(CPACK_PACKAGE_CHECKSUM SHA256)

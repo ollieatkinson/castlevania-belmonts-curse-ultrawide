@@ -1,8 +1,10 @@
-foreach(name MenuCameraCode MenuCameraCall)
+foreach(name MenuCameraCode MenuCameraCall ConfinerCode ConfinerAspectCall)
     if(name STREQUAL "MenuCameraCode")
         set(section .text)
+    elseif(name STREQUAL "ConfinerCode")
+        set(section .CameraBoundsHook)
     else()
-        set(section .MenuCameraCall)
+        set(section .${name})
     endif()
     execute_process(COMMAND "${OBJCOPY}" -O binary -j "${section}"
         "${BINARY_DIR}/menu-camera.elf" "${BINARY_DIR}/${name}.bin"

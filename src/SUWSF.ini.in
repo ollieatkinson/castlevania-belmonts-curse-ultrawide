@@ -54,3 +54,21 @@ Value="@MenuCameraCall@"
 ValueType="byte"
 Match="1"
 Module="GameAssembly.dll"
+
+; Preview: retain original camera boundaries on ultrawide.
+[Patch:00ConfinerCode]
+Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Offset=116
+Value="@ConfinerCode@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
+
+; Preview: retain original camera boundaries on ultrawide.
+[Patch:ConfinerAspect]
+Pattern="E8 6F 59 23 00 0F 28 D0 45 84 E4 0F 85 40 01 00 00 F3 0F 10 4F 60 F3 0F 5C CE 41 0F 54 CF 41 0F"
+Offset=0
+Value="@ConfinerAspectCall@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"

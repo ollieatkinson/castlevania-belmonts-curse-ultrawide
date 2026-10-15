@@ -1,5 +1,7 @@
 # Belmont's Curse Ultrawide
 
+**Camera-boundary preview:** keeps the original 16:9 camera boundaries while rendering the full ultrawide view. The correction addresses boundary failures reproduced using the game's compiled code and early-room data. Testing in players' previously broken climbs is still needed. Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually. Restore the stable release's INI to undo this preview.
+
 A drop-in [SUWSF](https://github.com/PhantomGamers/SUWSF) configuration for Castlevania: Belmont’s Curse. Automatically uses your monitor resolution, including **3440×1440** and **5120×2160**, with correct gameplay proportions and height-based UI scaling. The HUD keeps its original screen-edge anchoring, avoiding the exposed edge of its background artwork.
 
 Also supports **1280×800 (16:10)**, including map and inventory menus that fit within the screen.
@@ -8,7 +10,7 @@ Also supports **1280×800 (16:10)**, including map and inventory menus that fit 
 
 ## Install
 
-1. Close the game and download the ZIP from [Releases](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/latest).
+1. Close the game and download the [preview ZIP](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/tag/v1.0.2-preview.1).
 2. Extract its contents beside `Castlevania Belmont's Curse.exe` (Steam → Manage → Browse local files).
 3. Launch and select **Fullscreen Windowed** and the highest resolution entry. The entry is still labelled **3840×2160**, but now uses your configured resolution.
 
@@ -30,7 +32,7 @@ Verified in-game on Linux/Proton at 5120×2160 and in 3440×1440 and 1280×800 w
 
 ## Build
 
-The configuration template is `src/SUWSF.ini.in`. `src/menu-camera.s` contains the small runtime correction for the menu camera; CMake assembles it into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
+The configuration template is `src/SUWSF.ini.in`. `src/menu-camera.s` contains the menu-camera correction and `src/camera-bounds.s` contains the preview confinement correction; CMake assembles it into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
 
 With CMake 3.24 or later and GNU binutils for x86-64 ELF, available on Linux:
 
