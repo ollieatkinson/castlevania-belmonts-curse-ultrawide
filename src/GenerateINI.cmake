@@ -1,4 +1,6 @@
-foreach(name MenuCameraCode MenuCameraCall ConfinerCode ConfinerAspectCall)
+foreach(name MenuCameraCode MenuCameraCall ConfinerCode ConfinerAspectCall
+    MapWidthCode MapLevelCreateCall MapLevelApplyCreateCall MapLevelApplyResizeCall MapLevelResizeCall
+    MapWorldCreateCall MapWorldApplyCreateCall MapWorldApplyResizeCall MapWorldResizeCall)
     if(name STREQUAL "MenuCameraCode")
         set(section .text)
     elseif(name STREQUAL "ConfinerCode")
