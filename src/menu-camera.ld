@@ -6,6 +6,10 @@ screen_height = 0x182e72d40;
 get_parent = 0x182ec7fc0;
 set_width = 0x182ebcf30;
 generate_clues = 0x18082e280;
+invoke_room_event = 0x1808b2480;
+string_new = 0x18037f530;
+find_object = 0x182eb1690;
+set_active = 0x182eb26d0;
 SECTIONS {
  /DISCARD/ : { *(.note*) *(.comment) }
  .text 0x18047ee10 : { *(.text) }
@@ -15,7 +19,10 @@ SECTIONS {
  .MapWidthCode 0x18047ee80 : { *(.MapWidthCode) }
  ASSERT(SIZEOF(.MapWidthCode) <= 0x40, "Map-width hook overlaps Tarot-layout hook")
  .TarotLayoutCode 0x18047eec0 : { *(.TarotLayoutCode) }
- ASSERT(SIZEOF(.TarotLayoutCode) <= 0x140, "Tarot-layout hook exceeds unused executable padding")
+ ASSERT(SIZEOF(.TarotLayoutCode) <= 0x70, "Tarot-layout hook overlaps save-mask hook")
+ .SaveMaskCode 0x18047ef30 : { *(.SaveMaskCode) }
+ ASSERT(SIZEOF(.SaveMaskCode) <= 0xd0, "Save-mask hook exceeds unused executable padding")
+ .SaveMaskJump 0x1808b2ec7 : { *(.SaveMaskJump) }
  .TarotLayoutJump 0x18082f253 : { *(.TarotLayoutJump) }
  .MenuCameraCall 0x180860ded : { *(.MenuCameraCall) }
  .ConfinerAspectCall 0x1808d772c : { *(.ConfinerAspectCall) }
