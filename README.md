@@ -47,4 +47,6 @@ cmake --build build --target package
 
 The SUWSF fork builds and publishes its own Windows binaries. Mod Actions and local builds download the pinned fork release and ASI loader, with SHA-256 checksums in `CMakeLists.txt`, then package the mod on Linux. `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
 
+See [Updating after a game update](doc/how-to-update.md) for the Binary Ninja workflow.
+
 Configuration and packaging: MIT. [Third-party licenses](THIRD_PARTY_NOTICES.md). Unofficial community fix.
