@@ -276,3 +276,13 @@ ValueType="byte"
 Match="1"
 ExpectedMatches=1
 Module="GameAssembly.dll"
+
+; Keep the video proportional after preparation and display-mode changes.
+[Patch:VideoUpdate]
+Pattern="40 53 48 83 EC 30 83 B9 8C 00 00 00 02 48 8B D9 74 09 83 B9 8C 00 00 00 03 75 56 0F 29 74 24 20"
+Offset=0
+Value="@VideoUpdateJump@"
+ValueType="byte"
+Match="1"
+ExpectedMatches=1
+Module="GameAssembly.dll"

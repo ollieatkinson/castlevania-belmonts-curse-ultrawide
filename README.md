@@ -8,7 +8,9 @@ Also supports **1280×800 (16:10)**, including map and inventory menus that fit 
 
 Local and world maps stay proportional, and Tarot monster-hunt clues remain visible beside the card. Camera movement limits retain their original 16:9 framing with the full ultrawide view.
 
-**v1.1.1** adds a compatibility guard. It requires both its `SUWSF.asi` and `SUWSF.ini`; install the complete ZIP when upgrading from 1.1.0, preserving any manually configured resolution. It checks the game DLL's SHA-256 and every required pattern before applying patches. An unsupported build is logged and left unpatched.
+**v1.1.2** waits for patches to finish before game startup continues and keeps videos proportional after preparation or display-mode changes. It also prevents duplicate copies of SUWSF from patching the same process twice.
+
+Install the complete ZIP when upgrading, including both `SUWSF.asi` and `SUWSF.ini`, and preserve any manually configured resolution. The compatibility guard checks the game DLL's SHA-256 and every required pattern before applying patches. An unsupported build is logged and left unpatched.
 
 ![5120×2160 gameplay with SUWSF](https://raw.githubusercontent.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/trunk/.github/assets/gameplay.png)
 
@@ -16,7 +18,7 @@ Local and world maps stay proportional, and Tarot monster-hunt clues remain visi
 
 1. Close the game and download the [latest release ZIP](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/latest).
 2. Extract its contents beside `Castlevania Belmont's Curse.exe` (Steam → Manage → Browse local files).
-3. Launch and select **Fullscreen Windowed** and the highest resolution entry. The entry is still labelled **3840×2160**, but now uses your configured resolution.
+3. Launch, select **Fullscreen Windowed**, then select the **3840×2160** resolution entry once. That entry now uses your configured resolution, such as **5120×1440**, even though its label stays the same.
 
 **Linux/Proton:** add `WINEDLLOVERRIDES="version=n,b" %command%` to Steam launch options.
 
