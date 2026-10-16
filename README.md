@@ -10,7 +10,7 @@ Local and world maps stay proportional, and Tarot monster-hunt clues remain visi
 
 **v1.1.2** waits for patches to finish before game startup continues and keeps videos proportional after preparation or display-mode changes. It also prevents duplicate copies of SUWSF from patching the same process twice.
 
-Install the complete ZIP when upgrading, including both `SUWSF.asi` and `SUWSF.ini`, and preserve any manually configured resolution. The compatibility guard checks the game DLL's SHA-256 and every required pattern before applying patches. An unsupported build is logged and left unpatched.
+Install the complete ZIP when upgrading, including both `SUWSF.asi` and `SUWSF.ini`, and preserve any manually configured resolution. The compatibility guard checks the game DLL's SHA-256 and every required pattern before applying patches. **v1.1.3** shows a warning if these checks fail; the game continues without the fix, with details in `SUWSF.log`.
 
 ![5120×2160 gameplay with SUWSF](https://raw.githubusercontent.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/trunk/.github/assets/gameplay.png)
 

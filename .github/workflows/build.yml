@@ -54,4 +54,4 @@ jobs:
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
             --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
             "${release_flags[@]}" \
-            --notes 'Fixes a startup race by waiting for patches to finish before the game continues loading. Keeps videos proportional after preparation or display-mode changes, and prevents duplicate SUWSF copies from patching the same process twice. Install the complete ZIP, including SUWSF.asi and SUWSF.ini, and preserve any custom resolution. Supports Steam build 25975867.'
+            --notes 'Shows a warning when compatibility checks reject the patch, while the game continues without the widescreen fixes. Technical details remain in SUWSF.log. Install the complete ZIP, including SUWSF.asi and SUWSF.ini, and preserve any custom resolution. Supports Steam build 25975867.'
