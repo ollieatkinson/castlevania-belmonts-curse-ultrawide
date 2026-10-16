@@ -2,6 +2,11 @@
 [UserSettings]
 Resolution="auto"
 Enabled=true
+Atomic=true
+
+[Compatibility]
+Module="GameAssembly.dll"
+SHA256="4904978ba2c15884185cfaea8d348dfb8ffe69d466fafed1f46fb963a7276152"
 
 ; Replace the highest resolution preset in both display and rendering tables.
 [Patch:NativeWidth]
@@ -10,6 +15,7 @@ Offset=1
 Value="width"
 ValueType="int"
 Match="all"
+ExpectedMatches=2
 Module="GameAssembly.dll"
 
 [Patch:NativeHeight]
@@ -18,6 +24,7 @@ Offset=14
 Value="height"
 ValueType="int"
 Match="all"
+ExpectedMatches=2
 Module="GameAssembly.dll"
 
 ; Allow the monitor's aspect ratio through the game's supported-mode filter.
@@ -27,6 +34,7 @@ Offset=4
 Value="EB"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Use Expand scaling: preserve UI size using height on ultrawide screens.
@@ -36,6 +44,7 @@ Offset=8
 Value="EB 25"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Keep the world-space menu camera large enough for 16:10.
@@ -45,6 +54,7 @@ Offset=36
 Value="@MenuCameraCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Keep the world-space menu camera large enough for 16:10.
@@ -54,6 +64,7 @@ Offset=23
 Value="@MenuCameraCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Retain original camera boundaries on ultrawide.
@@ -63,6 +74,7 @@ Offset=116
 Value="@ConfinerCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Retain original camera boundaries on ultrawide.
@@ -72,6 +84,7 @@ Offset=0
 Value="@ConfinerAspectCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Render local and world maps at the aspect ratio of their fixed 16:9 panels.
@@ -81,6 +94,7 @@ Offset=148
 Value="@MapWidthCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapLevelCreate]
@@ -89,6 +103,7 @@ Offset=0
 Value="@MapLevelCreateCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapLevelApplyCreate]
@@ -97,6 +112,7 @@ Offset=0
 Value="@MapLevelApplyCreateCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapLevelApplyResize]
@@ -105,6 +121,7 @@ Offset=0
 Value="@MapLevelApplyResizeCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapLevelResize]
@@ -113,6 +130,7 @@ Offset=0
 Value="@MapLevelResizeCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapWorldCreate]
@@ -121,6 +139,7 @@ Offset=0
 Value="@MapWorldCreateCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapWorldApplyCreate]
@@ -129,6 +148,7 @@ Offset=0
 Value="@MapWorldApplyCreateCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapWorldApplyResize]
@@ -137,6 +157,7 @@ Offset=0
 Value="@MapWorldApplyResizeCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:MapWorldResize]
@@ -145,6 +166,7 @@ Offset=0
 Value="@MapWorldResizeCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Keep Tarot monster-hunt clues beside the card in the original 16:9 layout.
@@ -154,6 +176,7 @@ Offset=212
 Value="@TarotLayoutCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:TarotLayout]
@@ -162,6 +185,7 @@ Offset=3
 Value="@TarotLayoutJump@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Hide only the two named save-room side masks after entering a room.
@@ -171,6 +195,7 @@ Offset=324
 Value="@SaveMaskCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:SaveMasks]
@@ -179,6 +204,7 @@ Offset=16
 Value="@SaveMaskJump@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Use the original footprint for the other camera-boundary paths.
@@ -189,6 +215,7 @@ Offset=50
 Value="@ArenaCameraCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:ArenaCameraAspect]
@@ -197,6 +224,7 @@ Offset=0
 Value="@ArenaCameraCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Preserve vertical coverage for cameras authored with a fixed width.
@@ -206,6 +234,7 @@ Offset=0
 Value="@CameraScreenRatioJump@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:Confiner2DAspect]
@@ -214,6 +243,7 @@ Offset=0
 Value="@Confiner2DAspectCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Hide the dedicated real-time cutscene overlay.
@@ -224,6 +254,7 @@ Offset=0
 Value="C3"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 ; Fit the shared video image while preserving its proportions.
@@ -234,6 +265,7 @@ Offset=306
 Value="@VideoFitCode@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"
 
 [Patch:VideoFit]
@@ -242,4 +274,5 @@ Offset=0
 Value="@VideoFitCall@"
 ValueType="byte"
 Match="1"
+ExpectedMatches=1
 Module="GameAssembly.dll"

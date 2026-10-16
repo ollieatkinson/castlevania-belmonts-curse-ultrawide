@@ -11,12 +11,27 @@ permissions:
   contents: read
 
 jobs:
+  suwsf:
+    uses: ollieatkinson/SUWSF/.github/workflows/publish.yaml@2e8d479b89912f4bf732e4724ef386f6c96b6d98
+    with:
+      source-ref: 2e8d479b89912f4bf732e4724ef386f6c96b6d98
+
   build:
+    needs: suwsf
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: SUWSF-x64
+          path: suwsf
+      - name: Unpack SUWSF
+        working-directory: suwsf
+        run: |
+          sha256sum --check SUWSF-x64.zip.sha256
+          unzip -q SUWSF-x64.zip -d unpacked
       - name: Fetch dependencies
-        run: cmake -S . -B build
+        run: cmake -S . -B build -DFETCHCONTENT_SOURCE_DIR_SUWSF="$GITHUB_WORKSPACE/suwsf/unpacked"
       - name: Package
         run: |
           cmake --build build --target package
@@ -54,4 +69,4 @@ jobs:
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
             --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
             "${release_flags[@]}" \
-            --notes 'Updated for Steam build 25975867. Includes locked-fight camera framing, proportional pre-rendered videos, cutscene bar removal and the save-room side-mask fix. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution.'
+            --notes 'Adds a game DLL hash check and all-or-nothing patch validation. Unsupported game builds are left unpatched. Install the complete ZIP, including both SUWSF.asi and SUWSF.ini; preserve any manually configured resolution. Targets Steam build 25975867 and includes all fixes from 1.1.0.'
