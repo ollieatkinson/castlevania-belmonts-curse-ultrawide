@@ -8,7 +8,7 @@ Also supports **1280×800 (16:10)**, including map and inventory menus that fit 
 
 Local and world maps stay proportional, and Tarot monster-hunt clues remain visible beside the card. Camera movement limits retain their original 16:9 framing with the full ultrawide view.
 
-Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually.
+**v1.1.1** adds a compatibility guard. It requires both its `SUWSF.asi` and `SUWSF.ini`; install the complete ZIP when upgrading from 1.1.0, preserving any manually configured resolution. It checks the game DLL's SHA-256 and every required pattern before applying patches. An unsupported build is logged and left unpatched.
 
 ![5120×2160 gameplay with SUWSF](https://raw.githubusercontent.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/trunk/.github/assets/gameplay.png)
 
@@ -36,7 +36,7 @@ Checked on Linux/Proton with Steam build **25975867**. Earlier versions were als
 
 ## Build
 
-The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the camera, menu, map, Tarot, cutscene and save-room corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
+The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the camera, menu, map, Tarot, cutscene and save-room corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. The build uses our [SUWSF fork](https://github.com/ollieatkinson/SUWSF) for compatibility checks; CPack builds the release ZIP and checksum in `dist/`.
 
 With CMake 3.24 or later and GNU binutils for x86-64 ELF, available on Linux:
 
@@ -45,6 +45,6 @@ cmake -S . -B build
 cmake --build build --target package
 ```
 
-Actions runs this on `trunk`; `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
+Actions builds the pinned SUWSF source on Windows, then packages the mod on Linux. Local builds download the corresponding fork release and the pinned ASI loader, with SHA-256 checksums in `CMakeLists.txt`. `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
 
 Configuration and packaging: MIT. [Third-party licenses](THIRD_PARTY_NOTICES.md). Unofficial community fix.
