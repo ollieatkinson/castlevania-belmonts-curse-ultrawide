@@ -77,5 +77,37 @@ done:
     pop rbx
     ret
 
+# Refresh after preparation and when the window or canvas changes size.
+.global video_update
+video_update:
+    push rbx
+    sub rsp, 0x30
+    mov [rsp + 0x20], rcx
+    mov [rsp + 0x28], rdx
+    mov eax, [rcx + 0x8c]
+    sub eax, 2
+    cmp eax, 1
+    ja resume_update
+    mov rbx, [rcx + 0x28]
+    test rbx, rbx
+    je resume_update
+    mov rcx, rbx
+    xor edx, edx
+    call get_video_texture
+    test rax, rax
+    je resume_update
+    mov rdx, rax
+    mov rcx, rbx
+    xor r8d, r8d
+    call video_fit
+resume_update:
+    mov rcx, [rsp + 0x20]
+    mov rdx, [rsp + 0x28]
+    jmp video_update_resume
+
 .section .VideoFitCall,"a"
 call video_fit
+
+.section .VideoUpdateJump,"a"
+jmp video_update
+nop

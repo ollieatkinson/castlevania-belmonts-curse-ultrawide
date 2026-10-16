@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(BelmontsCurseUltrawide VERSION 1.1.1 LANGUAGES NONE)
+project(BelmontsCurseUltrawide VERSION 1.1.2 LANGUAGES NONE)
 
 find_program(ASSEMBLER as REQUIRED)
 find_program(LINKER ld REQUIRED)
@@ -7,8 +7,8 @@ find_program(OBJCOPY objcopy REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(suwsf
-    URL https://github.com/ollieatkinson/SUWSF/releases/download/v2.3.0-guard.1/SUWSF-x64.zip
-    URL_HASH SHA256=9f31df28b22b96ec8bf9263445f816e0c2d08c78e4dbb762a4d4e45bac779823
+    URL https://github.com/ollieatkinson/SUWSF/releases/download/v2.3.0-guard.2-rc.1/SUWSF-x64.zip
+    URL_HASH SHA256=3c3124ed45f941fa800ca89d239bf1b23e3061f5f07b01975c81656d37b544c7
     TLS_VERIFY TRUE
 )
 FetchContent_Declare(asi_loader

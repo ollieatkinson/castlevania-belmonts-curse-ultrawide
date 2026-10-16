@@ -1,4 +1,6 @@
 set_video_texture = 0x18312fa30;
+get_video_texture = 0x1808ecd00;
+video_update_resume = 0x1808a5c26;
 texture_width = 0x182e94350;
 texture_height = 0x182e940f0;
 get_transform = 0x182ea1030;
@@ -47,4 +49,5 @@ SECTIONS {
  .VideoFitCode 0x1831b4500 : { *(.VideoFitCode) }
  ASSERT(SIZEOF(.VideoFitCode) <= 0x500, "Video-fit hook exceeds unused executable page")
  .VideoFitCall 0x1808a53c7 : { *(.VideoFitCall) }
+ .VideoUpdateJump 0x1808a5c20 : { *(.VideoUpdateJump) }
 }
