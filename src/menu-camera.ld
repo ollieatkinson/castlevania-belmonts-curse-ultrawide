@@ -34,4 +34,9 @@ SECTIONS {
  .MapWorldApplyCreateCall 0x18086fcf7 : { *(.MapWorldApplyCreateCall) }
  .MapWorldApplyResizeCall 0x18086fdad : { *(.MapWorldApplyResizeCall) }
  .MapWorldResizeCall 0x180870da9 : { *(.MapWorldResizeCall) }
+ .ArenaCameraCode 0x1831b4400 : { *(.ArenaCameraCode) }
+ ASSERT(SIZEOF(.ArenaCameraCode) <= 0x60, "Arena hook exceeds reserved executable padding")
+ .ArenaCameraCall 0x1807869c6 : { *(.ArenaCameraCall) }
+ .CameraScreenRatioJump 0x180515407 : { *(.CameraScreenRatioJump) }
+ .Confiner2DAspectCall 0x180ad1ef8 : { *(.Confiner2DAspectCall) }
 }
