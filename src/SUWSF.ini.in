@@ -214,3 +214,31 @@ Value="@Confiner2DAspectCall@"
 ValueType="byte"
 Match="1"
 Module="GameAssembly.dll"
+
+; Hide the dedicated real-time cutscene overlay.
+; Pre-rendered videos still need aspect-correct padding.
+[Patch:CutsceneBars]
+Pattern="48 83 EC 28 48 8B 49 20 48 85 C9 74 18 48 8B 11 48 8B 82 F8 02 00 00 48 8B 92 00 03 00 00 48 83"
+Offset=0
+Value="C3"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
+
+; Fit the shared video image while preserving its proportions.
+; Code occupies unused space in the last executable il2cpp page.
+[Patch:00VideoFitCode]
+Pattern="8B 07 48 89 45 38 48 8D 15 95 2E C5 00 48 8D 4D 38 E8 5C 20 29 FD 90 48 83 C4 20 5F 5D 5B C3 CC"
+Offset=306
+Value="@VideoFitCode@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
+
+[Patch:VideoFit]
+Pattern="E8 64 A6 88 02 89 BB A0 00 00 00 4D 85 F6 0F 84 6F 02 00 00 45 33 C9 4C 8D 44 24 30 8B D7 49 8B"
+Offset=0
+Value="@VideoFitCall@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"

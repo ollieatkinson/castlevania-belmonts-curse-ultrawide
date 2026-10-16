@@ -1,3 +1,8 @@
+set_video_texture = 0x18312fa30;
+texture_width = 0x182e94350;
+texture_height = 0x182e940f0;
+get_transform = 0x182ea1030;
+get_rect = 0x182ebe370;
 get_aspect = 0x182e5c5e0;
 set_orthographic_size = 0x182e5e5e0;
 set_enabled = 0x182e9ee20;
@@ -39,4 +44,7 @@ SECTIONS {
  .ArenaCameraCall 0x1807869c6 : { *(.ArenaCameraCall) }
  .CameraScreenRatioJump 0x180515407 : { *(.CameraScreenRatioJump) }
  .Confiner2DAspectCall 0x180ad1ef8 : { *(.Confiner2DAspectCall) }
+ .VideoFitCode 0x1831b4500 : { *(.VideoFitCode) }
+ ASSERT(SIZEOF(.VideoFitCode) <= 0x500, "Video-fit hook exceeds unused executable page")
+ .VideoFitCall 0x1808a53c7 : { *(.VideoFitCall) }
 }
