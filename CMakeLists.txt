@@ -7,8 +7,8 @@ find_program(OBJCOPY objcopy REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(suwsf
-    URL https://github.com/ollieatkinson/SUWSF/releases/download/v2.3.0-guard.2-rc.1/SUWSF-x64.zip
-    URL_HASH SHA256=3c3124ed45f941fa800ca89d239bf1b23e3061f5f07b01975c81656d37b544c7
+    URL https://github.com/ollieatkinson/SUWSF/releases/download/v2.3.0-guard.2/SUWSF-x64.zip
+    URL_HASH SHA256=ccb2b18725723f45ace885867fc46f34f7e572c9bcb6603efb0515539eb47997
     TLS_VERIFY TRUE
 )
 FetchContent_Declare(asi_loader
