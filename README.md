@@ -4,7 +4,9 @@ A drop-in [SUWSF](https://github.com/PhantomGamers/SUWSF) configuration for Cast
 
 Also supports **1280×800 (16:10)**, including map and inventory menus that fit within the screen.
 
-**v1.0.3** fixes squeezed local and world maps, including their labels and icons, on ultrawide displays. Both maps were checked at **5120×1440 (32:9)** on Linux/Proton. Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually.
+**v1.0.4** fixes Tarot monster-hunt clues being hidden behind the card on ultrawide displays. The card, clue list and description keep their original layout. Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually.
+
+Includes the map-proportion correction from 1.0.3, checked with local and world maps at **5120×1440 (32:9)** on Linux/Proton.
 
 Includes the camera-boundary correction from 1.0.2: original 16:9 camera movement limits with the full ultrawide view. Please report the location and resolution of any climbs that still lose sight of the player.
 
@@ -34,7 +36,7 @@ Verified in-game on Linux/Proton at 5120×2160 and in 5120×1440, 3440×1440 and
 
 ## Build
 
-The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the menu-camera, camera-boundary and map-proportion corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
+The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the menu-camera, camera-boundary, map-proportion and Tarot-layout corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
 
 With CMake 3.24 or later and GNU binutils for x86-64 ELF, available on Linux:
 

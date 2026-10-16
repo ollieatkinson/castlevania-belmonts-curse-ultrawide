@@ -54,4 +54,4 @@ jobs:
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
             --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
             "${release_flags[@]}" \
-            --notes 'Fixes squeezed local and world maps, including their labels and icons, on ultrawide displays. Renders map textures at the 16:9 aspect ratio of their display panels while keeping gameplay ultrawide. Both maps were checked at 5120×1440 on Linux/Proton; Windows confirmation is still welcome. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution. Includes the camera-boundary correction from 1.0.2 and the 1280×800 menu correction. Targets Steam build 25766122.'
+            --notes 'Fixes Tarot monster-hunt clues being hidden behind the card on ultrawide displays. Keeps the card, clue list and description together in their original layout, verified in-game on Linux/Proton. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution. Includes all previous map, camera-boundary and 1280×800 menu corrections. Targets Steam build 25766122.'

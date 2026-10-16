@@ -145,3 +145,20 @@ Value="@MapWorldResizeCall@"
 ValueType="byte"
 Match="1"
 Module="GameAssembly.dll"
+
+; Keep Tarot monster-hunt clues beside the card in the original 16:9 layout.
+[Patch:00TarotLayoutCode]
+Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Offset=212
+Value="@TarotLayoutCode@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
+
+[Patch:TarotLayout]
+Pattern="45 33 C0 E9 28 F0 FF FF CC CC CC CC CC CC CC CC 48 89 5C 24 08 57 48 83 EC 20 80 3D 48 CF 93 03"
+Offset=3
+Value="@TarotLayoutJump@"
+ValueType="byte"
+Match="1"
+Module="GameAssembly.dll"
