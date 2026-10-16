@@ -45,6 +45,6 @@ cmake -S . -B build
 cmake --build build --target package
 ```
 
-Actions builds the pinned SUWSF source on Windows, then packages the mod on Linux. Local builds download the corresponding fork release and the pinned ASI loader, with SHA-256 checksums in `CMakeLists.txt`. `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
+The SUWSF fork builds and publishes its own Windows binaries. Mod Actions and local builds download the pinned fork release and ASI loader, with SHA-256 checksums in `CMakeLists.txt`, then package the mod on Linux. `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
 
 Configuration and packaging: MIT. [Third-party licenses](THIRD_PARTY_NOTICES.md). Unofficial community fix.
