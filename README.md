@@ -34,7 +34,7 @@ Other room masks remain unchanged. Menu background artwork can also have visible
 
 The camera-boundary correction was verified using the game's compiled code and early-room data. The specific climb toward the third boss reported by players has not yet been tested in-game.
 
-Verified in-game on Linux/Proton at 5120×2160 and in 5120×1440, 3440×1440 and 1280×800 windows, using Steam build **25766122**. Windows gameplay testing is pending.
+Targets Steam build **25975867**. Earlier builds were verified on Linux/Proton at 5120×2160 and in 5120×1440, 3440×1440 and 1280×800 windows. Windows gameplay testing is pending.
 
 ## Build
 

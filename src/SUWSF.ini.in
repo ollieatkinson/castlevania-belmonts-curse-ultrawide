@@ -39,7 +39,7 @@ Module="GameAssembly.dll"
 
 ; Keep the world-space menu camera large enough for 16:10.
 [Patch:00MenuCameraCode]
-Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Pattern="48 8B 05 DD AC CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 A6 D0 03 E9 A0 56 FC FF"
 Offset=36
 Value="@MenuCameraCode@"
 ValueType="byte"
@@ -57,7 +57,7 @@ Module="GameAssembly.dll"
 
 ; Retain original camera boundaries on ultrawide.
 [Patch:00ConfinerCode]
-Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Pattern="48 8B 05 DD AC CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 A6 D0 03 E9 A0 56 FC FF"
 Offset=116
 Value="@ConfinerCode@"
 ValueType="byte"
@@ -75,7 +75,7 @@ Module="GameAssembly.dll"
 
 ; Render local and world maps at the aspect ratio of their fixed 16:9 panels.
 [Patch:00MapWidthCode]
-Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Pattern="48 8B 05 DD AC CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 A6 D0 03 E9 A0 56 FC FF"
 Offset=148
 Value="@MapWidthCode@"
 ValueType="byte"
@@ -83,7 +83,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:MapLevelCreate]
-Pattern="E8 A1 4A 60 02 33 C9 8B F0 E8 38 4A 60 02 48 8B 0D 21 20 69 03 8B D8 E8 CA 62 B5 FF 41 B9 18 00"
+Pattern="E8 A1 4A 60 02 33 C9 8B F0 E8 38 4A 60 02 48 8B 0D D9 28 69 03 8B D8 E8 9A 59 B5 FF 41 B9 18 00"
 Offset=0
 Value="@MapLevelCreateCall@"
 ValueType="byte"
@@ -91,7 +91,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:MapLevelApplyCreate]
-Pattern="E8 88 81 60 02 33 C9 8B F0 E8 1F 81 60 02 48 8B 0D 08 57 69 03 8B D8 E8 B1 99 B5 FF 41 B9 18 00"
+Pattern="E8 88 81 60 02 33 C9 8B F0 E8 1F 81 60 02 48 8B 0D C0 5F 69 03 8B D8 E8 81 90 B5 FF 41 B9 18 00"
 Offset=0
 Value="@MapLevelApplyCreateCall@"
 ValueType="byte"
@@ -115,7 +115,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:MapWorldCreate]
-Pattern="E8 8D 24 60 02 33 C9 8B F0 E8 24 24 60 02 48 8B 0D 0D FA 68 03 8B D8 E8 B6 3C B5 FF 41 B9 18 00"
+Pattern="E8 8D 24 60 02 33 C9 8B F0 E8 24 24 60 02 48 8B 0D C5 02 69 03 8B D8 E8 86 33 B5 FF 41 B9 18 00"
 Offset=0
 Value="@MapWorldCreateCall@"
 ValueType="byte"
@@ -123,7 +123,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:MapWorldApplyCreate]
-Pattern="E8 D4 39 60 02 33 C9 8B F0 E8 6B 39 60 02 48 8B 0D 54 0F 69 03 8B D8 E8 FD 51 B5 FF 41 B9 18 00"
+Pattern="E8 D4 39 60 02 33 C9 8B F0 E8 6B 39 60 02 48 8B 0D 0C 18 69 03 8B D8 E8 CD 48 B5 FF 41 B9 18 00"
 Offset=0
 Value="@MapWorldApplyCreateCall@"
 ValueType="byte"
@@ -148,7 +148,7 @@ Module="GameAssembly.dll"
 
 ; Keep Tarot monster-hunt clues beside the card in the original 16:9 layout.
 [Patch:00TarotLayoutCode]
-Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Pattern="48 8B 05 DD AC CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 A6 D0 03 E9 A0 56 FC FF"
 Offset=212
 Value="@TarotLayoutCode@"
 ValueType="byte"
@@ -156,7 +156,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:TarotLayout]
-Pattern="45 33 C0 E9 28 F0 FF FF CC CC CC CC CC CC CC CC 48 89 5C 24 08 57 48 83 EC 20 80 3D 48 CF 93 03"
+Pattern="45 33 C0 E9 28 F0 FF FF CC CC CC CC CC CC CC CC 48 89 5C 24 08 57 48 83 EC 20 80 3D 0B DB 93 03"
 Offset=3
 Value="@TarotLayoutJump@"
 ValueType="byte"
@@ -165,7 +165,7 @@ Module="GameAssembly.dll"
 
 ; Hide only the two named save-room side masks after entering a room.
 [Patch:00SaveMaskCode]
-Pattern="48 8B 05 0D 9C CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 95 D0 03 E9 A0 56 FC FF"
+Pattern="48 8B 05 DD AC CE 03 48 83 F8 0A 72 CD 48 83 C4 28 C3 CC CC 48 8D 0D A9 A6 D0 03 E9 A0 56 FC FF"
 Offset=324
 Value="@SaveMaskCode@"
 ValueType="byte"
@@ -173,7 +173,7 @@ Match="1"
 Module="GameAssembly.dll"
 
 [Patch:SaveMasks]
-Pattern="74 24 50 48 8B 5C 24 58 48 83 C4 30 41 5E 5F 5D E9 B4 F5 FF FF E8 6F F9 B5 FF CC E8 69 F9 B5 FF"
+Pattern="74 24 50 48 8B 5C 24 58 48 83 C4 30 41 5E 5F 5D E9 B4 F5 FF FF E8 3F F0 B5 FF CC E8 39 F0 B5 FF"
 Offset=16
 Value="@SaveMaskJump@"
 ValueType="byte"

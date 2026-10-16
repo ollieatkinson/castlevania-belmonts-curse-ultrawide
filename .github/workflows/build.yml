@@ -54,4 +54,4 @@ jobs:
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
             --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
             "${release_flags[@]}" \
-            --notes 'Fixes Tarot monster-hunt clues being hidden behind the card on ultrawide displays. Keeps the card, clue list and description together in their original layout, verified in-game on Linux/Proton. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution. Includes all previous map, camera-boundary and 1280×800 menu corrections. Targets Steam build 25766122.'
+            --notes 'Updates the ultrawide patches for Steam build 25975867 and removes the save-room side masks. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution.'
