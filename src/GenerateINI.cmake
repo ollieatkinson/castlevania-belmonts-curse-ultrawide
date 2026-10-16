@@ -1,7 +1,7 @@
 foreach(name MenuCameraCode MenuCameraCall ConfinerCode ConfinerAspectCall
     MapWidthCode MapLevelCreateCall MapLevelApplyCreateCall MapLevelApplyResizeCall MapLevelResizeCall
     MapWorldCreateCall MapWorldApplyCreateCall MapWorldApplyResizeCall MapWorldResizeCall
-    TarotLayoutCode TarotLayoutJump SaveMaskCode SaveMaskJump)
+    TarotLayoutCode TarotLayoutJump SaveMaskCode SaveMaskJump ArenaCameraCode ArenaCameraCall CameraScreenRatioJump Confiner2DAspectCall)
     if(name STREQUAL "MenuCameraCode")
         set(section .text)
     elseif(name STREQUAL "ConfinerCode")
