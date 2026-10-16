@@ -4,13 +4,11 @@ A drop-in [SUWSF](https://github.com/PhantomGamers/SUWSF) configuration for Cast
 
 Also supports **1280×800 (16:10)**, including map and inventory menus that fit within the screen.
 
-Removes the two foreground side masks in save rooms while preserving the surrounding artwork.
+**v1.1.0** supports Steam build **25975867**, improves locked-fight and boss camera framing, and keeps pre-rendered videos proportional. Removes the real-time cutscene bars and the two save-room side masks while preserving the surrounding artwork.
 
-**v1.0.4** fixes Tarot monster-hunt clues being hidden behind the card on ultrawide displays. The card, clue list and description keep their original layout. Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually.
+Local and world maps stay proportional, and Tarot monster-hunt clues remain visible beside the card. Camera movement limits retain their original 16:9 framing with the full ultrawide view.
 
-Includes the map-proportion correction from 1.0.3, checked with local and world maps at **5120×1440 (32:9)** on Linux/Proton.
-
-Includes the camera-boundary correction from 1.0.2: original 16:9 camera movement limits with the full ultrawide view. Please report the location and resolution of any climbs that still lose sight of the player.
+Existing users can replace `SUWSF.ini` and restart; keep your configured resolution if it is set manually.
 
 ![5120×2160 gameplay with SUWSF](https://raw.githubusercontent.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/trunk/.github/assets/gameplay.png)
 
@@ -32,13 +30,13 @@ Close the game and delete `version.dll`, `version.ini`, `SUWSF.asi`, `SUWSF.ini`
 
 Other room masks remain unchanged. Menu background artwork can also have visible edges outside its original framing. This runtime version does not modify scene assets. The HUD is anchored to the display edge; menus stay centered.
 
-The camera-boundary correction was verified using the game's compiled code and early-room data. The specific climb toward the third boss reported by players has not yet been tested in-game.
+Some camera encounters and pre-rendered videos still need wider testing. Please include the location and resolution when reporting a problem.
 
-Targets Steam build **25975867**. Earlier builds were verified on Linux/Proton at 5120×2160 and in 5120×1440, 3440×1440 and 1280×800 windows. Windows gameplay testing is pending.
+Checked on Linux/Proton with Steam build **25975867**. Earlier versions were also checked in 5120×1440, 3440×1440 and 1280×800 windows. Windows gameplay testing is pending.
 
 ## Build
 
-The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the menu-camera, camera-boundary, map-proportion, Tarot-layout and save-room mask corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
+The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the camera, menu, map, Tarot, cutscene and save-room corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. `CMakeLists.txt` pins upstream downloads with SHA-256 hashes; CPack builds the release ZIP and checksum in `dist/`.
 
 With CMake 3.24 or later and GNU binutils for x86-64 ELF, available on Linux:
 

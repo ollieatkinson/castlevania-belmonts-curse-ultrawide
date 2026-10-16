@@ -54,4 +54,4 @@ jobs:
           gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/*.ini \
             --verify-tag --title "$RELEASE_TAG — SUWSF ultrawide" \
             "${release_flags[@]}" \
-            --notes 'Updates the ultrawide patches for Steam build 25975867 and removes the save-room side masks. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution.'
+            --notes 'Updated for Steam build 25975867. Includes locked-fight camera framing, proportional pre-rendered videos, cutscene bar removal and the save-room side-mask fix. Existing users can replace SUWSF.ini and restart, preserving any manually configured resolution.'

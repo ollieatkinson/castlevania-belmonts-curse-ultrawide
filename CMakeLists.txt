@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(BelmontsCurseUltrawide VERSION 1.0.4 LANGUAGES NONE)
+project(BelmontsCurseUltrawide VERSION 1.1.0 LANGUAGES NONE)
 
 find_program(ASSEMBLER as REQUIRED)
 find_program(LINKER ld REQUIRED)
