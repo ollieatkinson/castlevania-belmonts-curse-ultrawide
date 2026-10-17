@@ -11,6 +11,7 @@ namespace BelmontsCurseUltrawide;
 
 internal sealed class ConfinerHooks : IDisposable
 {
+    internal readonly Feature Fix = new("camera boundaries");
     [ThreadStatic] private static int boundaryCalculation;
     private readonly List<INativeDetour> hooks = new();
     private AspectGetter aspect = null!;
@@ -36,14 +37,18 @@ internal sealed class ConfinerHooks : IDisposable
     private float GetAspect(IntPtr lens, IntPtr method)
     {
         var value = aspect(lens, method);
-        if (boundaryCalculation == 0) return value;
-        var bounded = Math.Min(value, Plugin.NormalAspect);
-        if (!observedAspect)
+        if (!Fix.Enabled || boundaryCalculation == 0) return value;
+        try
         {
-            observedAspect = true;
-            Plugin.Logger.LogInfo($"Camera boundary aspect: {value:F5} -> {bounded:F5}");
+            var bounded = Math.Min(value, Plugin.NormalAspect);
+            if (!observedAspect)
+            {
+                observedAspect = true;
+                Plugin.Logger.LogInfo($"Camera boundary aspect: {value:F5} -> {bounded:F5}");
+            }
+            return bounded;
         }
-        return bounded;
+        catch (Exception e) { Fix.Disable(e); return value; }
     }
 
     private void AddPipeline(Type type)
@@ -52,15 +57,19 @@ internal sealed class ConfinerHooks : IDisposable
         var observed = false;
         void Callback(IntPtr self, IntPtr camera, CinemachineCore.Stage stage, IntPtr state, float deltaTime, IntPtr method)
         {
-            var confining = stage == CinemachineCore.Stage.Body;
+            var confining = Fix.Enabled && stage == CinemachineCore.Stage.Body;
             if (confining)
             {
                 boundaryCalculation++;
-                if (!observed)
+                try
                 {
-                    observed = true;
-                    Plugin.Logger.LogInfo($"Camera boundary hook active: {type.Name}");
+                    if (!observed)
+                    {
+                        observed = true;
+                        Plugin.Logger.LogInfo($"Camera boundary hook active: {type.Name}");
+                    }
                 }
+                catch (Exception e) { Fix.Disable(e); }
             }
             try { original(self, camera, stage, state, deltaTime, method); }
             finally { if (confining) boundaryCalculation--; }
@@ -83,7 +92,11 @@ internal sealed class ConfinerHooks : IDisposable
 
     public void Dispose()
     {
-        for (var i = hooks.Count - 1; i >= 0; i--) hooks[i].Dispose();
+        for (var i = hooks.Count - 1; i >= 0; i--)
+        {
+            try { hooks[i].Dispose(); }
+            catch (Exception e) { Fix.Disable(e); }
+        }
         hooks.Clear();
     }
 }

@@ -29,7 +29,7 @@ On Linux/Proton, BepInEx uses `WINEDLLOVERRIDES="winhttp=n,b" %command%`. Keep a
 
 If you used a custom resolution in `SUWSF.ini`, copy that value into the new configuration file after the first launch.
 
-Supports Steam build **25975867**. If the compatibility check rejects your game or a hook fails to install, the mod shows a warning and leaves the game running without the widescreen fixes. Details are in `BepInEx/LogOutput.log`.
+Supports Steam build **25975867**. An unsupported game version shows a warning and runs without the widescreen fixes. If an individual fix fails to install or throws a managed exception, it is disabled for that session and logged in `BepInEx/LogOutput.log`; the other fixes can continue.
 
 ## Remove
 
@@ -49,7 +49,7 @@ Run `dotnet msbuild -t:PackageStandalone` afterward to make the second ZIP. It u
 
 The **Standalone package** GitHub Actions workflow builds and uploads this ZIP for an existing release tag.
 
-The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. All hooks must install successfully.
+The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. Related hooks share a fallback so a failed map or video fix disables the whole group. The compatibility check remains necessary: managed exception guards cannot reliably recover from invalid native-memory access.
 
 See [Updating after a game update](doc/how-to-update.md).
 
