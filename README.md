@@ -1,46 +1,42 @@
 # Belmont's Curse Ultrawide
 
-A drop-in [SUWSF](https://github.com/PhantomGamers/SUWSF) configuration for Castlevania: Belmont’s Curse. Automatically uses your monitor resolution, including **3440×1440** and **5120×2160**, with correct gameplay proportions and height-based UI scaling. The HUD keeps its original screen-edge anchoring, avoiding the exposed edge of its background artwork.
+An experimental BepInEx port of the SUWSF ultrawide fix for Castlevania: Belmont's Curse. Playtesting is pending.
 
-Also supports **1280×800 (16:10)**, including map and inventory menus that fit within the screen.
+Uses your monitor resolution, including **3440×1440** and **5120×2160**, with proportional gameplay and UI that fits **1280×800 (16:10)** too. The HUD stays at the screen edges, while menus stay centered.
 
-![5120×2160 gameplay with SUWSF](https://raw.githubusercontent.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/trunk/.github/assets/gameplay.png)
+Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. The title-menu masks remain unchanged.
+
+![5120×2160 gameplay with the SUWSF version](.github/assets/gameplay.png)
 
 ## Install
 
-1. Close the game and download the [latest release ZIP](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/latest).
-2. Extract its contents beside `Castlevania Belmont's Curse.exe` (Steam → Manage → Browse local files).
-3. Launch, select **Fullscreen Windowed**, then select the **3840×2160** resolution entry once. That entry now uses your configured resolution, such as **5120×1440**, even though its label stays the same.
+1. Install [BepInEx for Castlevania (6.0.788)](https://www.nexusmods.com/castlevaniabelmontscurse/mods/3) and launch once.
+2. If replacing our SUWSF version, close the game and remove its `SUWSF.asi`, `SUWSF.ini`, `version.dll` and `version.ini`. Keep BepInEx and other mods.
+3. Copy `BelmontsCurseUltrawide.dll` into `BepInEx/plugins/`.
+4. Launch, select **Fullscreen Windowed**, then select the **3840×2160** entry once. Its label stays the same, but it now uses your configured resolution.
 
-**Linux/Proton:** add `WINEDLLOVERRIDES="version=n,b" %command%` to Steam launch options.
+On Linux/Proton, BepInEx uses `WINEDLLOVERRIDES="winhttp=n,b" %command%`. Keep any other launch options you need.
 
-`SUWSF.ini` defaults to `Resolution="auto"`. To specify a resolution, use e.g. `Resolution="3440x1440"`. Restart after changing it. Windows may require the [x64 Visual C++ redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe).
+`BepInEx/config/ollieatkinson.belmontscurseultrawide.cfg` defaults to `Resolution = auto`. To choose a resolution, use e.g. `Resolution = 3440x1440`. Restart after changing it. `Enabled = false` disables the fixes.
+
+The compatibility check still requires Steam build **25975867**. If it rejects your game or a hook fails to install, the mod shows a warning and leaves the game running without the widescreen fixes. Details are in `BepInEx/LogOutput.log`.
 
 ## Remove
 
-Close the game and delete `version.dll`, `version.ini`, `SUWSF.asi`, `SUWSF.ini` and the `BelmontsCurseUltrawide` documentation folder. On Proton, also remove the launch option. Game files and saves are unchanged.
-
-## Limitations
-
-Other room masks remain unchanged. Menu background artwork can also have visible edges outside its original framing. This runtime version does not modify scene assets. The HUD is anchored to the display edge; menus stay centered.
-
-Some camera encounters and pre-rendered videos still need wider testing. Please include the location and resolution when reporting a problem.
-
-Checked on Linux/Proton with Steam build **25975867**. Earlier versions were also checked in 5120×1440, 3440×1440 and 1280×800 windows. Windows gameplay testing is pending.
+Close the game and delete `BepInEx/plugins/BelmontsCurseUltrawide.dll`. Its configuration file can also be deleted. Keep BepInEx if other mods use it. Game files and saves are unchanged.
 
 ## Build
 
-The configuration template is `src/SUWSF.ini.in`. The assembly files in `src/` contain the camera, menu, map, Tarot, cutscene and save-room corrections; CMake assembles them into `build/SUWSF.ini`. `src/version.ini` preloads the game's IL2CPP module before scanning. The build uses our [SUWSF fork](https://github.com/ollieatkinson/SUWSF) for compatibility checks; CPack builds the release ZIP and checksum in `dist/`.
-
-With CMake 3.24 or later and GNU binutils for x86-64 ELF, available on Linux:
+Install the .NET 8 SDK and run BepInEx once to generate the game's interop assemblies. Build against that installation:
 
 ```sh
-cmake -S . -B build
-cmake --build build --target package
+dotnet build -c Release -p:GamePath="/path/to/Castlevania Belmont's Curse"
 ```
 
-The SUWSF fork builds and publishes its own Windows binaries. Mod Actions and local builds download the pinned fork release and ASI loader, with SHA-256 checksums in `CMakeLists.txt`, then package the mod on Linux. `v*` tags publish releases. No game files or Python are needed. Players only need the release ZIP.
+The DLL is in `bin/Release/net6.0/`. To package it, use `dotnet msbuild -restore -t:Package -p:Configuration=Release -p:GamePath="/path/to/game"`. The ZIP in `dist/` contains the plugin, README and license. Game and BepInEx assemblies are references only and are not included.
 
-See [Updating after a game update](doc/how-to-update.md) for the Binary Ninja workflow.
+The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. All hooks must install successfully.
 
-Configuration and packaging: MIT. [Third-party licenses](THIRD_PARTY_NOTICES.md). Unofficial community fix.
+See [Updating after a game update](doc/how-to-update.md).
+
+MIT. Unofficial community fix.
