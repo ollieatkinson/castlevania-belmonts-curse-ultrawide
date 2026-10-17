@@ -1,10 +1,12 @@
 using HarmonyLib;
+using MotherBase.EntityFramework;
 using RoomManager;
 using UnityEngine;
 
 namespace BelmontsCurseUltrawide;
 
 [HarmonyPatch(typeof(RoomManagerSystem), nameof(RoomManagerSystem.OnRoomChanged))]
+[GameSignature(typeof(void), typeof(EntityContext))]
 [HarmonyWrapSafe]
 internal static class SaveRoomMasks
 {
@@ -23,6 +25,7 @@ internal static class SaveRoomMasks
 }
 
 [HarmonyPatch(typeof(MenuStackLayerUIContainer), nameof(MenuStackLayerUIContainer.OnPushLayer))]
+[GameSignature(typeof(void))]
 [HarmonyWrapSafe]
 internal static class CutsceneBars
 {

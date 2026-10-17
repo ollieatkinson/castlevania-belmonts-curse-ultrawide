@@ -4,6 +4,7 @@ using UnityEngine;
 namespace BelmontsCurseUltrawide;
 
 [HarmonyPatch(typeof(CameraScreenSize), "get_screenRatio")]
+[GameSignature(typeof(float))]
 [HarmonyWrapSafe]
 internal static class FixedWidthCameras
 {
@@ -21,6 +22,8 @@ internal static class FixedWidthCameras
 }
 
 [HarmonyPatch(typeof(CameraManagerSystem), nameof(CameraManagerSystem.ClampToBounds))]
+[GameSignature(typeof(Vector3), typeof(Vector3), typeof(float), typeof(CameraTarget))]
+[GameField(typeof(CameraTarget), nameof(CameraTarget.cameraConfinerBounds), typeof(Rect))]
 [HarmonyWrapSafe]
 internal static class LockedFightCameras
 {

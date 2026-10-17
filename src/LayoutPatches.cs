@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace BelmontsCurseUltrawide;
 
 [HarmonyPatch(typeof(CanvasScaler), nameof(CanvasScaler.HandleScaleWithScreenSize))]
+[GameSignature(typeof(void))]
 [HarmonyWrapSafe]
 internal static class InterfaceScaling
 {
@@ -34,6 +35,10 @@ internal static class InterfaceScaling
 }
 
 [HarmonyPatch(typeof(SwitchToWorldSpaceUi), nameof(SwitchToWorldSpaceUi.DisplayUiInWorldSpace))]
+[GameSignature(typeof(void))]
+[GameField(typeof(SwitchToWorldSpaceUi), nameof(SwitchToWorldSpaceUi.worldSpaceCamera), typeof(Camera))]
+[GameField(typeof(SwitchToWorldSpaceUi), nameof(SwitchToWorldSpaceUi._isInWorldSpace), typeof(bool))]
+[GameField(typeof(SwitchToWorldSpaceUi), nameof(SwitchToWorldSpaceUi._switchingToOverlay), typeof(bool))]
 [HarmonyWrapSafe]
 internal static class MenuCamera
 {
@@ -53,6 +58,8 @@ internal static class MenuCamera
 }
 
 [HarmonyPatch(typeof(HuntViewManager), nameof(HuntViewManager.UpdateDisplay))]
+[GameSignature(typeof(void), typeof(ArcanaCodexData))]
+[GameField(typeof(HuntViewManager), nameof(HuntViewManager.clueListContainer), typeof(Transform))]
 [HarmonyWrapSafe]
 internal static class TarotLayout
 {

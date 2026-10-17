@@ -41,6 +41,9 @@ internal static class DisplayPatches
 }
 
 [HarmonyPatch(typeof(VideoSettings), nameof(VideoSettings.OnEnable))]
+[GameSignature(typeof(void))]
+[GameField(typeof(VideoSettings), nameof(VideoSettings._resolutions), typeof(ValueTuple<int, int>[]), Static = true)]
+[GameField(typeof(VideoSettings), nameof(VideoSettings._16By9Resolutions), typeof(ValueTuple<int, int>[]), Static = true)]
 [HarmonyWrapSafe]
 internal static class NativeResolution
 {
@@ -61,6 +64,14 @@ internal static class NativeResolution
 }
 
 [HarmonyPatch(typeof(VideoSettings), nameof(VideoSettings.UpdateSupportedResolutions))]
+[GameSignature(typeof(void))]
+[GameField(typeof(VideoSettings), nameof(VideoSettings.supportOnly16By9), typeof(bool))]
+[GameField(typeof(VideoSettings), nameof(VideoSettings._fullscreenModes), typeof(FullScreenMode[]), Static = true)]
+[GameField(typeof(VideoSettings), nameof(VideoSettings._windowMode), typeof(EnumSetting))]
+[GameField(typeof(VideoSettings), nameof(VideoSettings._resolution), typeof(EnumSetting))]
+[GameField(typeof(EnumSetting), nameof(EnumSetting._options), typeof(EnumSetting.EnumSettingOption[]))]
+[GameField(typeof(EnumSetting.EnumSettingOption), nameof(EnumSetting.EnumSettingOption.value), typeof(int))]
+[GameField(typeof(EnumSetting.EnumSettingOption), nameof(EnumSetting.EnumSettingOption.supported), typeof(bool))]
 [HarmonyWrapSafe]
 internal static class SupportedModes
 {
@@ -104,6 +115,10 @@ internal static class SupportedModes
 }
 
 [HarmonyPatch(typeof(UIDropdownEnumSettingBinding), nameof(UIDropdownEnumSettingBinding.Bind))]
+[GameSignature(typeof(void), typeof(Setting<int>))]
+[GameField(typeof(UISettingBinding<EnumSetting, int>), nameof(UISettingBinding<EnumSetting, int>.settingPath), typeof(string))]
+[GameField(typeof(UISettingBinding<EnumSetting, int>), nameof(UISettingBinding<EnumSetting, int>._setting), typeof(EnumSetting))]
+[GameField(typeof(EnumSetting.EnumSettingOption), nameof(EnumSetting.EnumSettingOption.name), typeof(LocalizedString))]
 [HarmonyWrapSafe]
 internal static class ResolutionLabel
 {

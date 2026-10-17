@@ -31,6 +31,8 @@ internal static class VideoFit
 }
 
 [HarmonyPatch(typeof(VideoController), nameof(VideoController.PlayVideo))]
+[GameSignature(typeof(void), typeof(VideoClipData))]
+[GameField(typeof(VideoController), nameof(VideoController._videoPresenter), typeof(UnityEngine.UI.RawImage))]
 [HarmonyWrapSafe]
 internal static class InitialVideoFit
 {
@@ -48,6 +50,8 @@ internal static class InitialVideoFit
 }
 
 [HarmonyPatch(typeof(VideoController), nameof(VideoController.Update))]
+[GameSignature(typeof(void))]
+[GameField(typeof(VideoController), nameof(VideoController._state), typeof(VideoController.State))]
 [HarmonyWrapSafe]
 internal static class ResizeVideo
 {

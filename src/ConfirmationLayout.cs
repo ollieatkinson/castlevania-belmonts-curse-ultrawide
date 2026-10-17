@@ -4,6 +4,8 @@ using UnityEngine;
 namespace BelmontsCurseUltrawide;
 
 [HarmonyPatch(typeof(ConfirmationPopup), nameof(ConfirmationPopup.Show))]
+[GameSignature(typeof(void), typeof(ConfirmationPopup.Texts), typeof(Il2CppSystem.Action), typeof(Il2CppSystem.Action))]
+[GameField(typeof(ConfirmationPopup), nameof(ConfirmationPopup.container), typeof(Doozy.Runtime.UIManager.Containers.UIContainer))]
 [HarmonyWrapSafe]
 internal static class ConfirmationLayout
 {

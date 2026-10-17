@@ -21,6 +21,8 @@ internal static class MapTextures
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.WarmupRenderTexture))]
+[GameSignature(typeof(void))]
+[GameField(typeof(UIMapLevelManager), nameof(UIMapLevelManager._levelMapRenderTexture), typeof(RenderTexture))]
 [HarmonyWrapSafe]
 internal static class AreaMapTexture
 {
@@ -38,6 +40,7 @@ internal static class AreaMapTexture
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.ResizeRenderTexture))]
+[GameSignature(typeof(void))]
 [HarmonyWrapSafe]
 internal static class ResizeAreaMap
 {
@@ -57,6 +60,9 @@ internal static class ResizeAreaMap
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.ApplyRenderTexture))]
+[GameSignature(typeof(void), typeof(LevelMap))]
+[GameField(typeof(LevelMap), nameof(LevelMap.mapCamera), typeof(LevelMapCamera))]
+[GameField(typeof(LevelMapCamera), nameof(LevelMapCamera.mapCamera), typeof(Camera))]
 [HarmonyWrapSafe]
 internal static class ApplyAreaMap
 {
@@ -81,6 +87,8 @@ internal static class ApplyAreaMap
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.WarmupRenderTexture))]
+[GameSignature(typeof(void))]
+[GameField(typeof(UIMapWorldManager), nameof(UIMapWorldManager._worldMapRenderTexture), typeof(RenderTexture))]
 [HarmonyWrapSafe]
 internal static class WorldMapTexture
 {
@@ -98,6 +106,7 @@ internal static class WorldMapTexture
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.ResizeRenderTexture))]
+[GameSignature(typeof(void))]
 [HarmonyWrapSafe]
 internal static class ResizeWorldMap
 {
@@ -117,6 +126,9 @@ internal static class ResizeWorldMap
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.ApplyRenderTexture))]
+[GameSignature(typeof(void), typeof(WorldMap))]
+[GameField(typeof(WorldMap), nameof(WorldMap.mapCamera), typeof(WorldMapCamera))]
+[GameField(typeof(WorldMapCamera), nameof(WorldMapCamera.mapCamera), typeof(Camera))]
 [HarmonyWrapSafe]
 internal static class ApplyWorldMap
 {
