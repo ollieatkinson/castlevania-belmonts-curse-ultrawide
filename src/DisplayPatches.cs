@@ -7,6 +7,8 @@ namespace BelmontsCurseUltrawide;
 
 internal static class DisplayPatches
 {
+    internal static readonly Feature Fix = new("resolution");
+
     internal static (int Width, int Height) ReadResolution(string resolution)
     {
         if (resolution.Trim().Equals("auto", StringComparison.OrdinalIgnoreCase))
@@ -36,28 +38,49 @@ internal static class DisplayPatches
 }
 
 [HarmonyPatch(typeof(VideoSettings), nameof(VideoSettings.OnEnable))]
+[HarmonyWrapSafe]
 internal static class NativeResolution
 {
+    internal static readonly Feature Fix = DisplayPatches.Fix;
+
     [HarmonyPrefix]
     internal static void ApplyPresets()
     {
-        DisplayPatches.ReplacePreset(VideoSettings._resolutions);
-        DisplayPatches.ReplacePreset(VideoSettings._16By9Resolutions);
+        if (!Fix.Enabled) return;
+        try
+        {
+            DisplayPatches.ReplacePreset(VideoSettings._resolutions);
+            DisplayPatches.ReplacePreset(VideoSettings._16By9Resolutions);
+        }
+        catch (Exception e) { Fix.Disable(e); }
     }
 }
 
 [HarmonyPatch(typeof(VideoSettings), nameof(VideoSettings.UpdateSupportedResolutions))]
+[HarmonyWrapSafe]
 internal static class SupportedModes
 {
-    private static void Prefix(VideoSettings __instance, out bool __state)
+    internal static readonly Feature Fix = DisplayPatches.Fix;
+
+    private static void Prefix(VideoSettings __instance, out bool? __state)
     {
-        __state = __instance.supportOnly16By9;
-        __instance.supportOnly16By9 = false;
+        __state = null;
+        if (!Fix.Enabled) return;
+        try
+        {
+            __state = __instance.supportOnly16By9;
+            __instance.supportOnly16By9 = false;
+        }
+        catch (Exception e) { Fix.Disable(e); }
     }
 
-    private static Exception? Finalizer(VideoSettings __instance, bool __state, Exception? __exception)
+    private static Exception? Finalizer(VideoSettings __instance, bool? __state, Exception? __exception)
     {
-        __instance.supportOnly16By9 = __state;
+        try
+        {
+            if (__state.HasValue) __instance.supportOnly16By9 = __state.Value;
+        }
+        catch (Exception e) { Fix.Disable(e); }
         return __exception;
     }
 }

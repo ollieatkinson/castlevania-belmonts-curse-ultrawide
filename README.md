@@ -4,7 +4,7 @@ Ultrawide fixes for Castlevania: Belmont's Curse. Version 2.0 uses BepInEx and r
 
 Uses your monitor resolution, including **3440×1440** and **5120×2160**, with proportional gameplay and UI that fits **1280×800 (16:10)** too. The HUD stays at the screen edges, while menus stay centered.
 
-Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. The title-menu masks remain unchanged.
+Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. Confirmation dialogs, including the retry prompt, stay centered. The title-menu masks remain unchanged.
 
 Checked locally at 5120×2160: gameplay, save rooms, map, Tarot hints, a scripted camera pan, a locked fight and the opening video. Both confiner hooks ran, and Mirror Fast Travel worked alongside the mod. A full boss fight and other aspect ratios still need playtesting with this version.
 
@@ -29,7 +29,7 @@ On Linux/Proton, BepInEx uses `WINEDLLOVERRIDES="winhttp=n,b" %command%`. Keep a
 
 If you used a custom resolution in `SUWSF.ini`, copy that value into the new configuration file after the first launch.
 
-Supports Steam build **25975867**. If the compatibility check rejects your game or a hook fails to install, the mod shows a warning and leaves the game running without the widescreen fixes. Details are in `BepInEx/LogOutput.log`.
+Supports Steam build **25975867**. An unsupported game version shows a warning and runs without the widescreen fixes. If an individual fix fails to install or throws a managed exception, it is disabled for that session and logged in `BepInEx/LogOutput.log`; the other fixes can continue.
 
 ## Remove
 
@@ -49,7 +49,7 @@ Run `dotnet msbuild -t:PackageStandalone` afterward to make the second ZIP. It u
 
 The **Standalone package** GitHub Actions workflow builds and uploads this ZIP for an existing release tag.
 
-The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. All hooks must install successfully.
+The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. Related hooks share a fallback so a failed map or video fix disables the whole group. The compatibility check remains necessary: managed exception guards cannot reliably recover from invalid native-memory access.
 
 See [Updating after a game update](doc/how-to-update.md).
 

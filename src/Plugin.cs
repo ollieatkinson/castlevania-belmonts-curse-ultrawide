@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace BelmontsCurseUltrawide;
 
-[BepInPlugin(Id, "Belmont's Curse Ultrawide", "2.0.0")]
+[BepInPlugin(Id, "Belmont's Curse Ultrawide", "2.0.1")]
 public sealed class Plugin : BasePlugin
 {
     public const string Id = "ollieatkinson.belmontscurseultrawide";
@@ -13,7 +13,6 @@ public sealed class Plugin : BasePlugin
     internal static ManualLogSource Logger = null!;
     internal static int Width;
     internal static int Height;
-    private readonly Harmony harmony = new(Id);
     private readonly ConfinerHooks confiners = new();
 
     public override void Load()
@@ -26,14 +25,26 @@ public sealed class Plugin : BasePlugin
             Compatibility.Check();
             (Width, Height) = DisplayPatches.ReadResolution(Config.Bind("UserSettings", "Resolution", "auto",
                 "Monitor resolution, or WIDTHxHEIGHT (for example 3440x1440). Restart after changing.").Value);
-            confiners.Install();
-            harmony.PatchAll(typeof(Plugin).Assembly);
+            try { confiners.Install(); }
+            catch (Exception e) { confiners.Fix.Disable(e); confiners.Dispose(); }
+            foreach (var type in typeof(Plugin).Assembly.GetTypes())
+            {
+                if (!type.IsDefined(typeof(HarmonyPatch), false)) continue;
+                var fix = (Feature)AccessTools.Field(type, "Fix").GetValue(null)!;
+                if (!fix.Enabled) continue;
+                try { fix.Harmony.CreateClassProcessor(type).Patch(); }
+                catch (Exception e)
+                {
+                    fix.Disable(e);
+                    fix.Harmony.UnpatchSelf();
+                }
+            }
             NativeResolution.ApplyPresets();
             Log.LogInfo($"Ultrawide fixes loaded for {Width}x{Height}.");
         }
         catch (Exception e)
         {
-            harmony.UnpatchSelf();
+            Feature.UnpatchAll();
             confiners.Dispose();
             Log.LogError(e);
             Compatibility.Warn(e.Message);
@@ -42,7 +53,7 @@ public sealed class Plugin : BasePlugin
 
     public override bool Unload()
     {
-        harmony.UnpatchSelf();
+        Feature.UnpatchAll();
         confiners.Dispose();
         return true;
     }

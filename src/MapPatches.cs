@@ -5,6 +5,8 @@ namespace BelmontsCurseUltrawide;
 
 internal static class MapTextures
 {
+    internal static readonly Feature Fix = new("map textures");
+
     internal static void Resize(RenderTexture? texture, bool force = false)
     {
         if (!texture) return;
@@ -19,59 +21,119 @@ internal static class MapTextures
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.WarmupRenderTexture))]
+[HarmonyWrapSafe]
 internal static class AreaMapTexture
 {
-    private static void Postfix(UIMapLevelManager __instance) => MapTextures.Resize(__instance._levelMapRenderTexture);
+    internal static readonly Feature Fix = MapTextures.Fix;
+
+    private static void Postfix(UIMapLevelManager __instance)
+    {
+        if (!Fix.Enabled) return;
+        try
+        {
+            MapTextures.Resize(__instance._levelMapRenderTexture);
+        }
+        catch (Exception e) { Fix.Disable(e); }
+    }
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.ResizeRenderTexture))]
+[HarmonyWrapSafe]
 internal static class ResizeAreaMap
 {
+    internal static readonly Feature Fix = MapTextures.Fix;
+
     private static bool Prefix(UIMapLevelManager __instance)
     {
-        MapTextures.Resize(__instance._levelMapRenderTexture, force: true);
-        return false;
+        if (!Fix.Enabled) return true;
+        try
+        {
+            MapTextures.Resize(__instance._levelMapRenderTexture, force: true);
+            return false;
+        }
+        catch (Exception e) { Fix.Disable(e); }
+        return true;
     }
 }
 
 [HarmonyPatch(typeof(UIMapLevelManager), nameof(UIMapLevelManager.ApplyRenderTexture))]
+[HarmonyWrapSafe]
 internal static class ApplyAreaMap
 {
+    internal static readonly Feature Fix = MapTextures.Fix;
+
     private static bool Prefix(UIMapLevelManager __instance, LevelMap __0)
     {
-        // The native method inlines warmup and resize. Keep their order and
-        // finish sizing the texture before assigning it to the map camera.
-        __instance.WarmupRenderTexture();
-        MapTextures.Resize(__instance._levelMapRenderTexture, force: true);
-        __0.mapCamera.mapCamera.targetTexture = __instance._levelMapRenderTexture;
-        return false;
+        if (!Fix.Enabled) return true;
+        try
+        {
+            // The native method inlines warmup and resize. Keep their order and
+            // finish sizing the texture before assigning it to the map camera.
+            __instance.WarmupRenderTexture();
+            if (!Fix.Enabled) return true;
+            MapTextures.Resize(__instance._levelMapRenderTexture, force: true);
+            __0.mapCamera.mapCamera.targetTexture = __instance._levelMapRenderTexture;
+            return false;
+        }
+        catch (Exception e) { Fix.Disable(e); }
+        return true;
     }
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.WarmupRenderTexture))]
+[HarmonyWrapSafe]
 internal static class WorldMapTexture
 {
-    private static void Postfix(UIMapWorldManager __instance) => MapTextures.Resize(__instance._worldMapRenderTexture);
+    internal static readonly Feature Fix = MapTextures.Fix;
+
+    private static void Postfix(UIMapWorldManager __instance)
+    {
+        if (!Fix.Enabled) return;
+        try
+        {
+            MapTextures.Resize(__instance._worldMapRenderTexture);
+        }
+        catch (Exception e) { Fix.Disable(e); }
+    }
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.ResizeRenderTexture))]
+[HarmonyWrapSafe]
 internal static class ResizeWorldMap
 {
+    internal static readonly Feature Fix = MapTextures.Fix;
+
     private static bool Prefix(UIMapWorldManager __instance)
     {
-        MapTextures.Resize(__instance._worldMapRenderTexture, force: true);
-        return false;
+        if (!Fix.Enabled) return true;
+        try
+        {
+            MapTextures.Resize(__instance._worldMapRenderTexture, force: true);
+            return false;
+        }
+        catch (Exception e) { Fix.Disable(e); }
+        return true;
     }
 }
 
 [HarmonyPatch(typeof(UIMapWorldManager), nameof(UIMapWorldManager.ApplyRenderTexture))]
+[HarmonyWrapSafe]
 internal static class ApplyWorldMap
 {
+    internal static readonly Feature Fix = MapTextures.Fix;
+
     private static bool Prefix(UIMapWorldManager __instance, WorldMap __0)
     {
-        __instance.WarmupRenderTexture();
-        MapTextures.Resize(__instance._worldMapRenderTexture, force: true);
-        __0.mapCamera.mapCamera.targetTexture = __instance._worldMapRenderTexture;
-        return false;
+        if (!Fix.Enabled) return true;
+        try
+        {
+            __instance.WarmupRenderTexture();
+            if (!Fix.Enabled) return true;
+            MapTextures.Resize(__instance._worldMapRenderTexture, force: true);
+            __0.mapCamera.mapCamera.targetTexture = __instance._worldMapRenderTexture;
+            return false;
+        }
+        catch (Exception e) { Fix.Disable(e); }
+        return true;
     }
 }
