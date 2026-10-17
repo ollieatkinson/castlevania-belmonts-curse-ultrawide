@@ -27,8 +27,8 @@ The Tarot fix sets its ancestor panel to 3740 units wide. The menu camera uses t
 
 ## Build and play
 
-After checking the new code, update `SupportedHash` in `src/Compatibility.cs` using `sha256sum GameAssembly.dll`, then rebuild. Don't just replace the hash without checking the methods.
+Check the `GameSignature` and `GameField` expectations beside the Harmony patches and the native signatures in `ConfinerHooks.cs`. If a method or field changed, inspect the new code before updating the expectation and hook. There is no DLL hash to update; matching methods and fields can load on another game build.
 
 Install the DLL with the SUWSF version removed. Check `BepInEx/LogOutput.log`, then try movement, a locked fight or boss, a save room, both maps, Tarot clues and a pre-rendered video. Check 16:10, 21:9 and 32:9 where possible.
 
-Update the supported Steam build and testing notes in the README before releasing.
+Update the tested Steam build and testing notes in the README before releasing.

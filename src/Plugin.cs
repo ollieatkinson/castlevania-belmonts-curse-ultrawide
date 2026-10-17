@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace BelmontsCurseUltrawide;
 
-[BepInPlugin(Id, "Belmont's Curse Ultrawide", "2.0.2")]
+[BepInPlugin(Id, "Belmont's Curse Ultrawide", "2.0.3-dev")]
 public sealed class Plugin : BasePlugin
 {
     public const string Id = "ollieatkinson.belmontscurseultrawide";
@@ -22,14 +22,22 @@ public sealed class Plugin : BasePlugin
             return;
         try
         {
-            Compatibility.Check();
+            Compatibility.CheckLoaders();
             (Width, Height) = DisplayPatches.ReadResolution(Config.Bind("UserSettings", "Resolution", "auto",
                 "Monitor resolution, or WIDTHxHEIGHT (for example 3440x1440). Restart after changing.").Value);
+            var patches = typeof(Plugin).Assembly.GetTypes().Where(type => type.IsDefined(typeof(HarmonyPatch), false)).ToArray();
+            // Validate every member of a feature before installing any of it.
+            foreach (var type in patches)
+            {
+                var fix = (Feature)AccessTools.Field(type, "Fix").GetValue(null)!;
+                if (!fix.Enabled) continue;
+                try { Compatibility.CheckPatch(type); }
+                catch (Exception e) { fix.Disable(e); }
+            }
             try { confiners.Install(); }
             catch (Exception e) { confiners.Fix.Disable(e); confiners.Dispose(); }
-            foreach (var type in typeof(Plugin).Assembly.GetTypes())
+            foreach (var type in patches)
             {
-                if (!type.IsDefined(typeof(HarmonyPatch), false)) continue;
                 var fix = (Feature)AccessTools.Field(type, "Fix").GetValue(null)!;
                 if (!fix.Enabled) continue;
                 try { fix.Harmony.CreateClassProcessor(type).Patch(); }
@@ -40,7 +48,9 @@ public sealed class Plugin : BasePlugin
                 }
             }
             NativeResolution.ApplyPresets();
-            Log.LogInfo($"Ultrawide fixes loaded for {Width}x{Height}.");
+            var enabled = Feature.All.Count(fix => fix.Enabled);
+            Log.LogInfo($"Ultrawide fixes loaded for {Width}x{Height}; {enabled}/{Feature.All.Count} features enabled after compatibility checks.");
+            if (enabled == 0) Compatibility.Warn("No compatible widescreen fixes were found. Please update the mod.");
         }
         catch (Exception e)
         {

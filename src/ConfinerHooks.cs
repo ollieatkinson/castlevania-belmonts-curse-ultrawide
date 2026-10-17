@@ -1,9 +1,7 @@
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BepInEx.Unity.IL2CPP.Hook;
 using Cinemachine;
-using HarmonyLib;
-using Il2CppInterop.Common;
+using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Runtime;
 using MotherBase.CameraConfiner;
 
@@ -28,10 +26,18 @@ internal sealed class ConfinerHooks : IDisposable
 
     internal void Install()
     {
-        hooks.Add(INativeDetour.CreateAndApply<AspectGetter>(Address(typeof(LensSettings), "get_Aspect"),
-            GetAspect, out aspect));
-        AddPipeline(typeof(CinemachineConfiner2DSimplified));
-        AddPipeline(typeof(CinemachineConfiner2D));
+        if (RuntimeInformation.ProcessArchitecture != Architecture.X64)
+            throw new PlatformNotSupportedException("The native camera hooks require an x64 process.");
+        var aspectAddress = Address(Compatibility.Method(typeof(LensSettings), "get_Aspect", typeof(float)));
+        var simplified = PipelineAddress(typeof(CinemachineConfiner2DSimplified));
+        var standard = PipelineAddress(typeof(CinemachineConfiner2D));
+        Compatibility.CheckStage(nameof(CinemachineCore.Stage.Body), CinemachineCore.Stage.Body);
+        if (!IL2CPP.il2cpp_class_is_valuetype(Il2CppClassPointerStore<LensSettings>.NativeClassPtr))
+            throw new InvalidOperationException("LensSettings is no longer a value type.");
+        // Check all three native signatures before applying the first detour.
+        hooks.Add(INativeDetour.CreateAndApply<AspectGetter>(aspectAddress, GetAspect, out aspect));
+        AddPipeline(typeof(CinemachineConfiner2DSimplified), simplified);
+        AddPipeline(typeof(CinemachineConfiner2D), standard);
     }
 
     private float GetAspect(IntPtr lens, IntPtr method)
@@ -51,7 +57,7 @@ internal sealed class ConfinerHooks : IDisposable
         catch (Exception e) { Fix.Disable(e); return value; }
     }
 
-    private void AddPipeline(Type type)
+    private void AddPipeline(Type type, IntPtr address)
     {
         Pipeline original = null!;
         var observed = false;
@@ -74,19 +80,16 @@ internal sealed class ConfinerHooks : IDisposable
             try { original(self, camera, stage, state, deltaTime, method); }
             finally { if (confining) boundaryCalculation--; }
         }
-        hooks.Add(INativeDetour.CreateAndApply<Pipeline>(Address(type, "PostPipelineStageCallback"), Callback, out original));
+        hooks.Add(INativeDetour.CreateAndApply<Pipeline>(address, Callback, out original));
     }
 
-    private static unsafe IntPtr Address(Type type, string name)
+    private static IntPtr PipelineAddress(Type type) => Address(Compatibility.Method(type, "PostPipelineStageCallback", typeof(void),
+        typeof(CinemachineVirtualCameraBase), typeof(CinemachineCore.Stage), typeof(CameraState).MakeByRefType(), typeof(float)));
+
+    private static unsafe IntPtr Address(IntPtr info)
     {
-        RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-        var method = AccessTools.DeclaredMethod(type, name) ?? throw new MissingMethodException(type.FullName, name);
-        var field = Il2CppInteropUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(method)
-            ?? throw new MissingMemberException($"No IL2CPP method for {type.Name}.{name}.");
-        var info = (IntPtr)field.GetValue(null)!;
-        if (info == IntPtr.Zero) throw new MissingMethodException(type.FullName, name);
         var address = UnityVersionHandler.Wrap((Il2CppMethodInfo*)info).MethodPointer;
-        if (address == IntPtr.Zero) throw new MissingMethodException(type.FullName, name);
+        if (address == IntPtr.Zero) throw new MissingMethodException("No native camera method address.");
         return address;
     }
 
