@@ -4,7 +4,7 @@ Ultrawide fixes for Castlevania: Belmont's Curse. Version 2.0 uses BepInEx and r
 
 Uses your monitor resolution, including **3440×1440** and **5120×2160**, with proportional gameplay and UI that fits **1280×800 (16:10)** too. The HUD stays at the screen edges, while menus stay centered.
 
-Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. The title-menu masks remain unchanged.
+Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. Confirmation dialogs, including the retry prompt, stay centered. The title-menu masks remain unchanged.
 
 Checked locally at 5120×2160: gameplay, save rooms, map, Tarot hints, a scripted camera pan, a locked fight and the opening video. Both confiner hooks ran, and Mirror Fast Travel worked alongside the mod. A full boss fight and other aspect ratios still need playtesting with this version.
 
