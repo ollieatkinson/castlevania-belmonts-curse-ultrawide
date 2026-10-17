@@ -32,4 +32,5 @@
     <MakeDir Directories="dist" />
     <ZipDirectory SourceDirectory="$(PackageRoot)" DestinationFile="dist/$(AssemblyName)-v$(Version).zip" Overwrite="true" />
   </Target>
+  <Import Project="packaging/Standalone.targets" />
 </Project>

@@ -1,0 +1,33 @@
+name: Standalone package
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag
+        required: true
+        default: v2.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 8.0.x
+      - name: Download plugin release
+        run: gh release download "$RELEASE_TAG" --pattern "BelmontsCurseUltrawide-$RELEASE_TAG.zip" --dir dist
+      - name: Package with BepInEx
+        run: dotnet msbuild -t:PackageStandalone "-p:Version=${RELEASE_TAG#v}" -nologo
+      - name: Checksum
+        working-directory: dist
+        run: sha256sum "BelmontsCurseUltrawide-$RELEASE_TAG.standalone.zip" > "BelmontsCurseUltrawide-$RELEASE_TAG.standalone.zip.sha256"
+      - name: Upload standalone download
+        run: gh release upload "$RELEASE_TAG" dist/*.standalone.zip dist/*.standalone.zip.sha256 --clobber
