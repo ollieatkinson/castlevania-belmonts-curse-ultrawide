@@ -13,3 +13,6 @@ __pycache__/
 payload/
 .ultrawide-backup/
 .ultrawide-*/
+
+bin/
+obj/
