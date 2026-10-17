@@ -12,10 +12,16 @@ Checked locally at 5120×2160: gameplay, save rooms, map, Tarot hints, a scripte
 
 ## Install
 
-1. Install [BepInEx for Castlevania (6.0.788)](https://www.nexusmods.com/castlevaniabelmontscurse/mods/3) and launch once.
-2. If replacing our SUWSF version, close the game and remove `SUWSF.asi` and `SUWSF.ini`. Also remove `version.dll` and `version.ini` if they came from our old ZIP and no other ASI mods use them. Keep BepInEx and other mods.
-3. Extract the [latest release ZIP](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/latest) into the game directory. The plugin goes in `BepInEx/plugins/`.
-4. Launch, select **Fullscreen Windowed**, then select the **3840×2160** entry once. Its label stays the same, but it now uses your configured resolution.
+Download one ZIP from [Releases](https://github.com/ollieatkinson/castlevania-belmonts-curse-ultrawide/releases/latest):
+
+- **`.standalone.zip`** includes BepInEx 6.0.788. Use this for a fresh install.
+- **`.zip`** contains only the mod. Use this if you already have [BepInEx 6.0.788](https://www.nexusmods.com/castlevaniabelmontscurse/mods/3).
+
+1. Close the game. If upgrading from our SUWSF version, remove `SUWSF.asi` and `SUWSF.ini`. Also remove `version.dll` and `version.ini` if they came from our old ZIP and no other ASI mods use them. Keep BepInEx and other mods.
+2. Extract your chosen ZIP into the game directory, beside `Castlevania Belmont's Curse.exe`. The plugin goes in `BepInEx/plugins/`.
+3. Launch, select **Fullscreen Windowed**, then select the **3840×2160** entry once. Its label stays the same, but it now uses your configured resolution.
+
+The first launch with BepInEx may take a few minutes while it generates its game assemblies.
 
 On Linux/Proton, BepInEx uses `WINEDLLOVERRIDES="winhttp=n,b" %command%`. Keep any other launch options you need.
 
@@ -37,10 +43,14 @@ Install the .NET 8 SDK and run BepInEx once to generate the game's interop assem
 dotnet build -c Release -p:GamePath="/path/to/Castlevania Belmont's Curse"
 ```
 
-The DLL is in `bin/Release/net6.0/`. To package it, use `dotnet msbuild -restore -t:Package -p:Configuration=Release -p:GamePath="/path/to/game"`. The ZIP in `dist/` contains the plugin, README and license. Game and BepInEx assemblies are references only and are not included.
+The DLL is in `bin/Release/net6.0/`. To package it, use `dotnet msbuild -restore -t:Package -p:Configuration=Release -p:GamePath="/path/to/game"`. The ZIP in `dist/` contains the plugin, README and license.
+
+Run `dotnet msbuild -t:PackageStandalone` afterward to make the second ZIP. It uses the plugin ZIP already in `dist/`, downloads the pinned BepInEx 788 distribution and source archives, and checks their SHA-256 hashes. To package an existing release, set `-p:PluginArchive="/path/to/release.zip"`. The standalone ZIP includes dependency licenses and corresponding sources. Neither ZIP includes game assemblies.
+
+The **Standalone package** GitHub Actions workflow builds and uploads this ZIP for an existing release tag.
 
 The source is in `src/`. Most fixes use Harmony. The two confiners use BepInEx native detours because version 6.0.788 cannot marshal their `ref CameraState` argument safely; methods are resolved through IL2CPP metadata, with no fixed game addresses or code caves. All hooks must install successfully.
 
 See [Updating after a game update](doc/how-to-update.md).
 
-MIT. Unofficial community fix.
+MIT. Bundled dependencies retain their own licenses. Unofficial community fix.
