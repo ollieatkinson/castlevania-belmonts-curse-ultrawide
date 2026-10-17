@@ -19,7 +19,7 @@ Download one ZIP from [Releases](https://github.com/ollieatkinson/castlevania-be
 
 1. Close the game. If upgrading from our SUWSF version, remove `SUWSF.asi` and `SUWSF.ini`. Also remove `version.dll` and `version.ini` if they came from our old ZIP and no other ASI mods use them. Keep BepInEx and other mods.
 2. Extract your chosen ZIP into the game directory, beside `Castlevania Belmont's Curse.exe`. The plugin goes in `BepInEx/plugins/`.
-3. Launch, select **Fullscreen Windowed**, then select the **3840×2160** entry once. Its label stays the same, but it now uses your configured resolution.
+3. Launch, select **Fullscreen Windowed**, then choose your resolution. The monitor/custom resolution appears with its actual dimensions; selecting **3840×2160** is no longer required. Other supported resolutions also use their actual dimensions, including ultrawide and 16:10 sizes.
 
 The first launch with BepInEx may take a few minutes while it generates its game assemblies.
 
