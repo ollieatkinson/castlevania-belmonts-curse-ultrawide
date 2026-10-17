@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace BelmontsCurseUltrawide;
 
-[BepInPlugin(Id, "Belmont's Curse Ultrawide", "1.1.3")]
+[BepInPlugin(Id, "Belmont's Curse Ultrawide", "2.0.0")]
 public sealed class Plugin : BasePlugin
 {
     public const string Id = "ollieatkinson.belmontscurseultrawide";
