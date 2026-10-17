@@ -14,6 +14,7 @@ internal static class MapTextures
         texture!.Release();
         texture.width = width;
         texture.height = height;
+        Plugin.Logger.LogDebug($"Map texture {texture.name}: {width}x{height}");
     }
 }
 

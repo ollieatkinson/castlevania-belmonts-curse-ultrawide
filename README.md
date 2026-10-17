@@ -1,10 +1,12 @@
 # Belmont's Curse Ultrawide
 
-An experimental BepInEx port of the SUWSF ultrawide fix for Castlevania: Belmont's Curse. Playtesting is pending.
+An experimental BepInEx port of the SUWSF ultrawide fix for Castlevania: Belmont's Curse.
 
 Uses your monitor resolution, including **3440×1440** and **5120×2160**, with proportional gameplay and UI that fits **1280×800 (16:10)** too. The HUD stays at the screen edges, while menus stay centered.
 
 Includes the camera-boundary and locked-fight corrections, proportional area/world maps, Tarot clue layout, save-room mask removal, cutscene overlay removal and uncropped video presentation. The title-menu masks remain unchanged.
+
+Checked locally at 5120×2160: gameplay, save rooms, map and Tarot hints matched the SUWSF version. Both confiner hooks ran, and Mirror Fast Travel worked alongside the port. Locked fights, pre-rendered videos and other aspect ratios still need playtesting in this build.
 
 ![5120×2160 gameplay with the SUWSF version](.github/assets/gameplay.png)
 
